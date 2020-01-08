@@ -1,0 +1,20 @@
+<html>
+<head>
+    <link href="style.css" rel="stylesheet">
+    <title>CRP - intro to browser rendering optimization</title>
+</head>
+<body>
+  <h1 class="header">Critical Render Path Is Awesome!</h1>
+  <div class="control-panel">
+      <label>Number of elements:</label>
+      <input id="input_num_of_elements" type="number" value="400">
+      <button class="active" id="sync">Run with reflows!</button>
+      <button id="noread">Avoid reflows!</button>
+    <button id="toggle">Start</button>
+    <button id="withLayers">With Layers</button>
+  </div>
+  <div id="playground"></div>
+  <script src="app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,11 @@
+Pini
+<script>
+function createDiv(content){
+  const div = document.createElement("div");
+  div.innerText = content;
+  document.body.appendChild(div);
+}
+function createDivs(size, content){
+  [...new Array(size)].map(()=>createDiv(content));
+}
+</script>

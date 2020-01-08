@@ -1,0 +1,31 @@
+body{
+    font-family: Helvetica;
+}
+
+h1{
+    background: #9dc8ff;
+    color: white;
+    text-align: center;
+}
+
+button.active {
+    color: red;
+}
+
+.mover {
+    height: 100px;
+    width: 100px;
+    position: absolute;
+}
+
+.mover-morty{
+    background: url("morty.jpg") no-repeat center;
+    background-size: contain;
+
+}
+
+.mover-rick{
+    background: url("rick.jpg") no-repeat center;
+    background-size: contain;
+
+}
