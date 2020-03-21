@@ -1,0 +1,90 @@
+<html>
+<head>
+    <title>Rick & Morty - image processing 💫</title>
+    <meta charset="UTF-8"/>
+    <style>
+        * {
+            font-family: "Helvetica Neue";
+            font-size: 1em;
+        }
+
+        #menu {
+            position: fixed;
+        }
+
+        #counter {
+            background: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        #file-input {
+            height: 0;
+            overflow: hidden;
+            width: 0;
+        }
+
+        #file-input + label, button {
+            background: aliceblue;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        #file-input:focus + label {
+            outline: 2px solid cornflowerblue;
+        }
+    </style>
+</head>
+<body>
+<div id="menu">
+    <input accept="image/*" id="file-input" id="file-input" name="file-input" type="file">
+    <label for="file-input">Choose File</label>
+    <button id="apply-filter">Apply Filter</button>
+    <span id="counter">0</span>
+</div>
+<canvas id="preview"/>
+
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+
+<script type="text/javascript">
+  const $input = document.getElementById('file-input');
+  const $preview = document.getElementById('preview');
+  const $applyFilter = document.querySelector('#apply-filter');
+  const $counter = document.querySelector('#counter');
+  const previewCtx = $preview.getContext('2d');
+
+  $applyFilter.addEventListener('click', applyFilter);
+
+  $input.addEventListener('change', onFileChange);
+
+  setInterval(() => {
+    $counter.innerText = parseFloat($counter.innerText) + 0.5 + 's';
+  }, 500);
+
+  function onFileChange(e) {
+    const file = e.target.files[0];
+    /**
+     * Creates an ImageBitmap from loaded map.
+     * Once loaded: the image bitmap is added to canvas and a filter is applied.
+     * @param {!ImageBitmap} bitmap of the image loaded on the input field.
+     */
+    createImageBitmap(file)
+      .then((bitmap) => {
+        $preview.height = bitmap.height;
+        $preview.width = bitmap.width;
+        previewCtx.drawImage(bitmap, 0, 0);
+      });
+  }
+
+  /** Apply filter, multiply the RED property for each pixel by X. */
+  async function applyFilter() {
+      const startTime = Date.now();
+    const { data } = previewCtx.getImageData(0, 0, $preview.width, $preview.height);
+    const newImage = data.map((value, index) => index % 4 === 0 ? value * 1.25 : value);
+    previewCtx.drawImage(await createImageBitmap(new ImageData(newImage, $preview.width, $preview.height)), 0, 0);
+    console.log(`Handler took: ${Date.now() - startTime}ms`)
+  }
+</script>
+</body>
+</html>
