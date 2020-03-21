@@ -75,7 +75,9 @@
     function applyFilter() {
         const imageData = previewCtx.getImageData(0, 0, $preview.width, $preview.height);
         console.log(imageData.data.buffer)
+        console.log(`expect to be non-zero: ${imageData.data.buffer.byteLength}`)
         worker.postMessage(imageData, [imageData.data.buffer]);
+        console.log(`expect to be zero: ${imageData.data.buffer.byteLength}`)
     }
 
     function onFileChange(e) {
