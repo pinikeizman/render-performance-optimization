@@ -45,14 +45,22 @@
 </div>
 <canvas id="preview"/>
 
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
-
 <script type="text/javascript">
     const $input = document.getElementById('file-input');
     const $preview = document.getElementById('preview');
     const $applyFilter = document.querySelector('#apply-filter');
     const $counter = document.querySelector('#counter');
     const previewCtx = $preview.getContext('2d');
+    const worker = new Worker('worker.js');
+    /**
+     * Listens messages from worker.
+     * In this case: puts image data back to the canvas.
+     * @param {!Object} d Data sent by the worker.
+     */
+    worker.addEventListener('message', (d) => {
+        const imageData = d.data;
+        previewCtx.putImageData(imageData, 0, 0)
+    });
 
     $applyFilter.addEventListener('click', applyFilter);
 
@@ -64,11 +72,10 @@
 
     function applyFilter() {
         const imageData = previewCtx.getImageData(0, 0, $preview.width, $preview.height);
-        imageData.data.buffer = imageData.data.forEach((value, index) => {
-            if (index % 4 === 0)
-                imageData.data[index] = value * 1.25
-        });
-        previewCtx.putImageData(imageData, 0, 0)
+        console.log(imageData.data.buffer)
+        console.log(`expect to be non-zero: ${imageData.data.buffer.byteLength}`)
+        worker.postMessage(imageData, [imageData.data.buffer]);
+        console.log(`expect to be zero: ${imageData.data.buffer.byteLength}`)
     }
 
     function onFileChange(e) {

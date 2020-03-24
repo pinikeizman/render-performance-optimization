@@ -4,7 +4,7 @@
   "description": "Hard Pixel Life talk repo.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon"
   },
   "author": "",
   "license": "ISC",
